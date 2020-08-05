@@ -41,6 +41,7 @@ const removeNote = (title) => {
 // function to List all the notes
 const lisNotes = () =>{
     const notes = loadNotes();
+    // debugger
     console.log(chalk.bold.underline('Your Notes'));
     // console.log(notes);
     notes.forEach((note) => {
