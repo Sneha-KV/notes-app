@@ -1,15 +1,16 @@
 const fs = require('fs');
 const chalk = require('chalk');
-const getNotes = (a) => { return `Your notes....${a} `}
+const getNotes = (a) =>  `Your notes....${a} `
 
+// Function to add a note
 const addNote = (title,body) => {
     const notes = loadNotes();
     // console.log(notes);
     
-    const duplicateNotes = checkIfExists(notes,title);
+    const duplicateNote = checkIfExists(notes,title);
     
 
-    if(duplicateNotes.length === 0) {
+    if(!duplicateNote) {
         notes.push({
             title: title,
             body: body
@@ -22,12 +23,11 @@ const addNote = (title,body) => {
     
 }
 
+// function to remove notes
 const removeNote = (title) => {
     const notes = loadNotes();
     // const duplicateNotes = checkIfExists(notes,title);
-    var newNotesArray = notes.filter(function(note){    
-        return note.title !== title;
-    })
+    var newNotesArray = notes.filter((note) => note.title !== title)
     if(newNotesArray.length < notes.length) {
 
         console.log(chalk.bgGreen(`The note asked to be deleted is ${title}`));
@@ -37,11 +37,36 @@ const removeNote = (title) => {
     }
 }
 
-const checkIfExists = (notes,title) => {
-    const duplicateNotes = notes.filter(function(note){
-        return note.title === title;
+
+// function to List all the notes
+const lisNotes = () =>{
+    const notes = loadNotes();
+    // debugger
+    console.log(chalk.bold.underline('Your Notes'));
+    // console.log(notes);
+    notes.forEach((note) => {
+        console.log(chalk.yellow(note.title));
     })
-    return duplicateNotes;
+}
+
+// Function to read any specific note
+
+const readNote = (title) => {
+    const notes = loadNotes();
+    desiredNote = notes.find((note) => note.title === title);
+    if(desiredNote) {
+        console.log(chalk.black.bgYellow('Note title '+title));
+        console.log(desiredNote.body)
+    } else {
+        console.log(chalk.black.bgRed('Note with title '+ title +' not found.'));
+    }
+    
+}
+
+
+const checkIfExists = (notes,title) => {
+    // duplicate notes, can use filter too
+    return notes.find((note) => note.title === title)
 }
 
 const saveNotes = (notes) => {
@@ -61,8 +86,11 @@ const loadNotes = () => {
 
 
 
+
 module.exports = {
     getNotes: getNotes,
     addNote: addNote,
-    removeNote: removeNote
+    removeNote: removeNote,
+    lisNotes: lisNotes,
+    readNote: readNote
 };
